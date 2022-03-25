@@ -52,7 +52,7 @@ func main() {
 ## Slice
 Slice returns a new slice of the current collection starting with `from` and `to` indexes.
 ## Contains
- ontains returns true if an item is present in the current collection.
+Contains returns true if an item is present in the current collection.
 ## Shift
 Shift method removes the first item from the current collection, then returns that item.
 ## Unshift
