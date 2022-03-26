@@ -1,5 +1,5 @@
 
-BIN=go1.18
+BIN=go
 
 build:
 	${BIN} build -v ./...
