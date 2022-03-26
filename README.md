@@ -1,10 +1,10 @@
 # Collection
 
-![Build Status](https://github.com/wilhelm-murdoch/go-collection/actions/workfgo-collectionws/go.yml/badge.svg)
+![Build Status](https://github.com/wilhelm-murdoch/go-collection/actions/workflows/go.yml/badge.svg)
 [![GoDoc](https://godoc.org/github.com/wilhelm-murdoch/go-collection?status.svg)](https://pkg.go.dev/github.com/wilhelm-murdoch/go-collection)
 [![Go report](https://goreportcard.com/badge/github.com/wilhelm-murdoch/go-collection)](https://goreportcard.com/report/github.com/wilhelm-murdoch/go-collection)
 
-A parallel batch processing package for Go. 
+A generic collection for Go with a few convenient methods.
 
 # Methods
 * Filter
