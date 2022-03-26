@@ -1,4 +1,9 @@
 # Collection
+
+![Build Status](https://github.com/wilhelm-murdoch/go-collection/actions/workfgo-collectionws/go.yml/badge.svg)
+[![GoDoc](https://godoc.org/github.com/wilhelm-murdoch/go-collection?status.svg)](https://pkg.go.dev/github.com/wilhelm-murdoch/go-collection)
+[![Go report](https://goreportcard.com/badge/github.com/wilhelm-murdoch/go-collection)](https://goreportcard.com/report/github.com/wilhelm-murdoch/go-collection)
+
 A parallel batch processing package for Go. 
 
 # Methods
@@ -58,7 +63,7 @@ Shift method removes the first item from the current collection, then returns th
 ## Unshift
 Unshift method appends one item to the beginning of the current collection, returning the new length of the collection.
 ## At
-At attempts to return the item associated with the specified index for the current collection along with a boolean value stating whether or not an item could be found.
+At attempts to return the item associated with the specified index for the current collection ago-collectionng with a boolean value stating whether or not an item could be found.
 ## IsEmpty
 IsEmpty returns a boolean value describing the empty state of the current collection.
 ## Empty
@@ -102,9 +107,9 @@ InsertBefore inserts the specified item before the specified index and returns t
 ## InsertAfter
 InsertAfter inserts the specified item after the specified index and returns the current collection. If the specified index is less than 0, 0 is used. If an index greater than the size of the collectio nis specified, c.Push is used instead.
 ## AtFirst
-AtFirst attempts to return the first item of the collection along with a boolean value stating whether or not an item could be found.
+AtFirst attempts to return the first item of the collection ago-collectionng with a boolean value stating whether or not an item could be found.
 ## AtLast
-AtLast attempts to return the last item of the collection along with a boolean value stating whether or not an item could be found.
+AtLast attempts to return the last item of the collection ago-collectionng with a boolean value stating whether or not an item could be found.
 ## Count
 Count counts the number of items in the collection that compare equal to value.
 ## CountBy

@@ -21,7 +21,7 @@ func TestCollectionConcat(t *testing.T) {
 
 	c.Concat(s)
 
-	assert.Equal(t, c.Length(), (originalLength + len(s)), "The updated collection's length should equal the original length plus the length of the concatinated slice.")
+	assert.Equal(t, c.Length(), (originalLength + len(s)), "The updated collection's length should equal the original length plus the length of the updated slice.")
 }
 
 func TestCollectionEach(t *testing.T) {
@@ -214,7 +214,7 @@ func TestCollectionInsertAfter(t *testing.T) {
 	found, ok = c.At(index + 1)
 	assert.True(t, ok, "Expected no values associated with index 0, but got %d instead.", index)
 
-	last, ok := c.At(index + 1)
+	last, _ := c.At(index + 1)
 	assert.Equal(t, found, last, "Expected to find %s at index %d, but got %s instead.", find, index, last)
 }
 
