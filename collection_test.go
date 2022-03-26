@@ -9,7 +9,7 @@ import (
 )
 
 func returnCollection() *Collection[string] {
-	return NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets", "celery", "lettuce")
+	return New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets", "celery", "lettuce")
 }
 
 func TestCollectionConcat(t *testing.T) {
@@ -93,7 +93,7 @@ func TestCollectionIsEmpty(t *testing.T) {
 }
 
 func TestCollectionPush(t *testing.T) {
-	c := NewCollection[int]()
+	c := New[int]()
 
 	s := []int{1, 2, 3}
 
@@ -138,7 +138,7 @@ func TestCollectionReduce(t *testing.T) {
 }
 
 func TestCollectionLastIndexOf(t *testing.T) {
-	c := NewCollection("one", "two", "three", "four")
+	c := New("one", "two", "three", "four")
 
 	item := "four"
 	index := c.LastIndexOf(item)

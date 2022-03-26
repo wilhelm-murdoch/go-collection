@@ -10,9 +10,9 @@ type Collection[T any] struct {
 	items []T
 }
 
-// NewCollection returns a new collection of type T containing the specified
+// New returns a new collection of type T containing the specified
 // items and their types.
-func NewCollection[T any](items ...T) *Collection[T] {
+func New[T any](items ...T) *Collection[T] {
 	return &Collection[T]{
 		items: items,
 	}
