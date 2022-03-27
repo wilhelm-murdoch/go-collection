@@ -23,6 +23,7 @@ fmt.Println("Fruits:", fruits.Length())
 
 fruits.Each(func(index int, item string) bool {
   fmt.Println("-", item)
+  return false
 })
 ```
 Which, using the above example, will yield the following output:
@@ -76,7 +77,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
   out := c.Filter(func(item string) bool { 
     return item == "strawberry" || item == "banana"
   })
@@ -91,7 +92,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Contains
@@ -102,7 +103,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Shift
@@ -113,7 +114,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Unshift
@@ -124,7 +125,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## At
@@ -135,7 +136,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## IsEmpty
@@ -146,7 +147,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Empty
@@ -157,7 +158,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Find
@@ -168,7 +169,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## FindIndex
@@ -179,7 +180,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## RandomIndex
@@ -190,7 +191,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Random
@@ -201,7 +202,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## LastIndexOf
@@ -212,7 +213,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Reduce
@@ -223,7 +224,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Reverse
@@ -234,7 +235,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Some
@@ -245,7 +246,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## None
@@ -256,7 +257,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## All
@@ -267,7 +268,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Push
@@ -278,7 +279,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Pop
@@ -289,7 +290,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Length
@@ -300,7 +301,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Map
@@ -311,7 +312,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Each
@@ -322,7 +323,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Concat
@@ -333,7 +334,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## InsertAt
@@ -344,7 +345,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## InsertBefore
@@ -355,7 +356,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## InsertAfter
@@ -366,7 +367,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## AtFirst
@@ -377,7 +378,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## AtLast
@@ -388,7 +389,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## Count
@@ -399,7 +400,7 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```
 ## CountBy
@@ -410,6 +411,6 @@ package main
 import "github.com/wilhelm-murdoch/go-collection"
 
 func main() {
-  c := collection.NewCollection("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
+  c := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets")
 }
 ```

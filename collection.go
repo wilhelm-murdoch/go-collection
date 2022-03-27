@@ -1,4 +1,4 @@
-package batch
+package collection
 
 import (
 	"math/rand"
