@@ -18,6 +18,11 @@ func New[T any](items ...T) *Collection[T] {
 	}
 }
 
+// Items returns the current collection's set of items.
+func (c *Collection[T]) Items() []T {
+	return c.items
+}
+
 // Filter returns a new collection with items that have passed predicate check.
 func (c *Collection[T]) Filter(f func(T) bool) (out Collection[T]) {
 	for _, inner := range c.items {
