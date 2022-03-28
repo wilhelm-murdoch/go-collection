@@ -62,6 +62,20 @@ func (c *Collection[T]) Contains(item T) (found bool) {
 	return found
 }
 
+// PushDistinct method appends one or more distinct items to the current
+// collection, returning the new length. Items that already exist within the
+// current collection will be ignored. You can check for this by comparing old
+// v.s. new collection lengths.
+func (c *Collection[T]) PushDistinct(items ...T) int {
+	for _, item := range items {
+		if !c.Contains(item) {
+			c.Push(item)
+		}
+	}
+
+	return c.Length()
+}
+
 // Shift method removes the first item from the current collection, then
 // returns that item.
 func (c *Collection[T]) Shift() T {
@@ -220,8 +234,8 @@ func (c *Collection[T]) All(f func(i int, item T) bool) bool {
 
 // Push method appends one or more items to the end of a collection, returning
 // the new length.
-func (c *Collection[T]) Push(item ...T) int {
-	c.items = append(c.items, item...)
+func (c *Collection[T]) Push(items ...T) int {
+	c.items = append(c.items, items...)
 	return c.Length()
 }
 
