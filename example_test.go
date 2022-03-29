@@ -7,6 +7,25 @@ import (
 	"github.com/wilhelm-murdoch/go-collection"
 )
 
+func ExampleCollection_New() {
+	fruits := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot")
+	fmt.Println("Fruits:", fruits.Length())
+
+	fruits.Each(func(index int, item string) bool {
+		fmt.Println("-", item)
+		return false
+	})
+
+	// Output:
+	// Fruits: 6
+	// - apple
+	// - orange
+	// - strawberry
+	// - cherry
+	// - banana
+	// - apricot
+}
+
 func ExampleCollection_Slice() {
 	collection.New("apple", "orange", "strawberry").Slice(0, 2).Each(func(i int, item string) bool {
 		fmt.Println(item)
