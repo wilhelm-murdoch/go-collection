@@ -436,4 +436,4 @@ fmt.Println("Berry Types:", count)
 # License
 Copyright © 2022 [Wilhelm Murdoch](https://wilhelm.codes).
 
-This project is [MIT](./LICENSE) licensed.
+This project is [MIT](./LICENSE.md) licensed.
