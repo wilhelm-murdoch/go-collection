@@ -11,7 +11,7 @@ type Collection[T any] struct {
 }
 
 // New returns a new collection of type T containing the specified
-// items and their types.
+// items and their types. ( Chainable )
 func New[T any](items ...T) *Collection[T] {
 	return &Collection[T]{
 		items: items,
@@ -24,6 +24,7 @@ func (c *Collection[T]) Items() []T {
 }
 
 // Filter returns a new collection with items that have passed predicate check.
+// ( Chainable )
 func (c *Collection[T]) Filter(f func(T) bool) (out Collection[T]) {
 	for _, inner := range c.items {
 		if f(inner) {
@@ -34,20 +35,18 @@ func (c *Collection[T]) Filter(f func(T) bool) (out Collection[T]) {
 	return out
 }
 
-// Slice returns a new slice of the current collection starting with `from` and
-// `to` indexes.
-func (c *Collection[T]) Slice(from, to int) (out Collection[T], found bool) {
+// Slice returns a new collection containing a slice of the current collection
+// starting with `from` and `to` indexes. ( Chainable )
+func (c *Collection[T]) Slice(from, to int) *Collection[T] {
 	if from > to {
-		return out, false
+		from = to
 	}
 
 	if to > c.Length() {
-		return out, false
+		to = c.Length()
 	}
 
-	out.items = c.items[from:to]
-
-	return out, true
+	return New(c.items[from:to]...)
 }
 
 // Contains returns true if an item is present in the current collection.
@@ -114,9 +113,11 @@ func (c *Collection[T]) IsEmpty() bool {
 	return true
 }
 
-// Empty will reset the current collection to zero items.
-func (c *Collection[T]) Empty() {
+// Empty will reset the current collection to zero items. ( Chainable )
+func (c *Collection[T]) Empty() *Collection[T] {
 	c.items = nil
+
+	return c
 }
 
 // Find returns the first item in the provided current collectionthat satisfies
@@ -155,9 +156,7 @@ func (c *Collection[T]) RandomIndex() int {
 // Random returns a random item from the current collection.
 func (c *Collection[T]) Random() (T, bool) {
 	rand.Seed(time.Now().UnixNano())
-	index := rand.Intn(c.Length())
-
-	return c.At(index)
+	return c.At(rand.Intn(c.Length()))
 }
 
 // LastIndexOf returns the last index at which a given item can be found in the
@@ -186,7 +185,7 @@ func (c *Collection[T]) Reduce(f func(i int, item, accumulator T) T) (out T) {
 }
 
 // Reverse the current collection so that the first item becomes the last, the
-// second item becomes the second to last, and so on.
+// second item becomes the second to last, and so on. ( Chainable )
 func (c *Collection[T]) Reverse() *Collection[T] {
 	for i1, i2 := 0, c.Length()-1; i1 < i2; i1, i2 = i1+1, i2-1 {
 		c.items[i1], c.items[i2] = c.items[i2], c.items[i1]
@@ -259,7 +258,7 @@ func (c *Collection[T]) Length() int {
 
 // Map method creates to a new collection by using callback invocation result
 // on each array item. On each iteration f is invoked with arguments: index and
-// current item. It should return the new collection.
+// current item. It should return the new collection. ( Chainable )
 func (c *Collection[T]) Map(f func(int, T) T) (out Collection[T]) {
 	for i, item := range c.items {
 		out.Push(f(i, item))
@@ -269,7 +268,8 @@ func (c *Collection[T]) Map(f func(int, T) T) (out Collection[T]) {
 }
 
 // Each iterates through the specified list of items executes the specified
-// callback on each item. This method returns the current instance of collection.
+// callback on each item. This method returns the current instance of
+// collection. ( Chainable )
 func (c *Collection[T]) Each(f func(int, T) bool) *Collection[T] {
 	for i, item := range c.items {
 		if exit := f(i, item); exit == true {
@@ -281,7 +281,7 @@ func (c *Collection[T]) Each(f func(int, T) bool) *Collection[T] {
 }
 
 // Concat merges two slices of items. This method returns the current instance
-// collection with the specified slice of items appended to it.
+// collection with the specified slice of items appended to it. ( Chainable )
 func (c *Collection[T]) Concat(items []T) *Collection[T] {
 	c.items = append(c.items, items...)
 	return c
@@ -290,14 +290,14 @@ func (c *Collection[T]) Concat(items []T) *Collection[T] {
 // InsertAt inserts the specified item at the specified index and returns the
 // current collection. If the specified index is less than 0, 0 is used. If an
 // index greater than the size of the collectio nis specified, c.Push is used
-// instead.
+// instead. ( Chainable )
 func (c *Collection[T]) InsertAt(item T, index int) *Collection[T] {
 	if index <= 0 {
 		c.Unshift(item)
 		return c
 	}
 
-	if index >= (c.Length() - 1) {
+	if index > (c.Length() - 1) {
 		c.Push(item)
 		return c
 	}
@@ -308,10 +308,10 @@ func (c *Collection[T]) InsertAt(item T, index int) *Collection[T] {
 	return c
 }
 
-// InsertBefore inserts the specified item before the specified index and returns
-// the current collection. If the specified index is less than 0, 0 is used. If
-// an index greater than the size of the collectio nis specified, c.Push is used
-// instead.
+// InsertBefore inserts the specified item before the specified index and
+// returns the current collection. If the specified index is less than 0,
+// c.Unshift is used. If an index greater than the size of the collection is
+// specified, c.Push is used instead. ( Chainable )
 func (c *Collection[T]) InsertBefore(item T, index int) *Collection[T] {
 	return c.InsertAt(item, index-1)
 }
@@ -319,7 +319,7 @@ func (c *Collection[T]) InsertBefore(item T, index int) *Collection[T] {
 // InsertAfter inserts the specified item after the specified index and returns
 // the current collection. If the specified index is less than 0, 0 is used. If
 // an index greater than the size of the collectio nis specified, c.Push is used
-// instead.
+// instead. ( Chainable )
 func (c *Collection[T]) InsertAfter(item T, index int) *Collection[T] {
 	return c.InsertAt(item, index+1)
 }
