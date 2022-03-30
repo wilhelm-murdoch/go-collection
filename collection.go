@@ -32,7 +32,7 @@ func (c *Collection[T]) Filter(f func(T) bool) (out Collection[T]) {
 		}
 	}
 
-	return out
+	return
 }
 
 // Slice returns a new collection containing a slice of the current collection
@@ -57,8 +57,7 @@ func (c *Collection[T]) Contains(item T) (found bool) {
 			break
 		}
 	}
-
-	return found
+	return
 }
 
 // PushDistinct method appends one or more distinct items to the current
@@ -130,7 +129,7 @@ func (c *Collection[T]) Find(f func(i int, item T) bool) (item T) {
 		}
 	}
 
-	return item
+	return
 }
 
 // FindIndex returns the index of the first item in the specified collection
@@ -181,7 +180,7 @@ func (c *Collection[T]) Reduce(f func(i int, item, accumulator T) T) (out T) {
 		out = f(i, item, out)
 	}
 
-	return out
+	return
 }
 
 // Reverse the current collection so that the first item becomes the last, the
@@ -242,7 +241,7 @@ func (c *Collection[T]) Push(items ...T) int {
 // returns that item.
 func (c *Collection[T]) Pop() (out T, found bool) {
 	if c.Length() == 0 {
-		return out, false
+		return
 	}
 
 	out = c.items[c.Length()-1]
@@ -264,7 +263,7 @@ func (c *Collection[T]) Map(f func(int, T) T) (out Collection[T]) {
 		out.Push(f(i, item))
 	}
 
-	return out
+	return
 }
 
 // Each iterates through the specified list of items executes the specified
@@ -343,7 +342,7 @@ func (c *Collection[T]) Count(item T) (count int) {
 			count++
 		}
 	}
-	return count
+	return
 }
 
 // CountBy counts the number of items in the collection for which predicate is true.
@@ -353,5 +352,5 @@ func (c *Collection[T]) CountBy(f func(T) bool) (count int) {
 			count++
 		}
 	}
-	return count
+	return
 }
