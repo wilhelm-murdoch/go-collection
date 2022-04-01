@@ -1,6 +1,8 @@
 package collection
 
 import (
+	"bytes"
+	"encoding/json"
 	"math/rand"
 	"reflect"
 	"time"
@@ -353,4 +355,17 @@ func (c *Collection[T]) CountBy(f func(T) bool) (count int) {
 		}
 	}
 	return
+}
+
+// MarshalJSON implements the Marshaler interface so the current collection's
+// items can be marshalled into valid JSON.
+func (c *Collection[T]) MarshalJSON() ([]byte, error) {
+	var buffer bytes.Buffer
+	encoder := json.NewEncoder(&buffer)
+
+	if err := encoder.Encode(c.Items()); err != nil {
+		return nil, err
+	}
+
+	return buffer.Bytes(), nil
 }
