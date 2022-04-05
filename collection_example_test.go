@@ -1,13 +1,14 @@
 package collection_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 
 	"github.com/wilhelm-murdoch/go-collection"
 )
 
-func ExampleCollection_New() {
+func ExampleNew() {
 	fruits := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot")
 	fmt.Println("Fruits:", fruits.Length())
 
@@ -391,4 +392,14 @@ func ExampleCollection_CountBy() {
 
 	// Output:
 	// Berry Types: 2
+}
+
+func ExampleCollection_MarshalJSON() {
+	var buffer strings.Builder
+	encoder := json.NewEncoder(&buffer)
+	encoder.Encode(collection.New("apple", "orange", "strawberry"))
+	fmt.Println(buffer.String())
+
+	// Output:
+	// ["apple","orange","strawberry"]
 }

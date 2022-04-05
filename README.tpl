@@ -9,45 +9,30 @@ A generic collection for Go with a few convenient methods.
 ```
 go get github.com/wilhelm-murdoch/go-collection
 ```
-# Usage
-Import `go-collection` with the following:
+{{ range . }}{{ range .Files.Items }}{{ $path := .Path }}{{ range .Functions.Items }}{{ if and (ne .Name "main") (not .IsTest) (not .IsExample) (not .IsBenchmark)}}### Func {{ .Name }}
+* `{{ trim .Signature }}` [#]()
+* `{{ $path }}:{{ .LineStart }}-{{ .LineEnd }}` [#]()
+
+{{ .Comment | replace "\n" "" }}
+{{ range .Examples }}
 ```go
 package main
 
 import (
   "fmt"
+  "strings"
 
   "github.com/wilhelm-murdoch/go-collection"
 )
 
 func main() {
-	fruits := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot")
-	fmt.Println("Fruits:", fruits.Length())
-
-	fruits.Each(func(index int, item string) bool {
-		fmt.Println("-", item)
-		return false
-	})
-
-	// Output:
-	// Fruits: 6
-	// - apple
-	// - orange
-	// - strawberry
-	// - cherry
-	// - banana
-	// - apricot
+{{ indent 4 .Body }}
 }
 ```
-# Methods
-{{ range .Functions }}{{ if and (not (hasPrefix "Example" .Name)) (not (hasPrefix "Test" .Name)) }}
-  * [{{ .Name }}](#{{ .Name }}){{ end }}{{ end }}
-{{ range .Functions }}{{ if and (not (hasPrefix "Example" .Name)) (not (hasPrefix "Test" .Name)) (.Comment)}}
-## {{ .Name }}
-{{ .Comment }} {{ if .Example }}```go
-{{ .Example }}
-```
-{{ end }}{{ end }}{{ end }}
+{{ if .Output }}```go
+{{ .Output }}
+```{{ end }}{{ end }}
+{{ end }}{{ end }}{{ end }}{{ end }}
 # License
 Copyright © {{ now | date "2006" }} [Wilhelm Murdoch](https://wilhelm.codes).
 

@@ -1,6 +1,7 @@
 package collection_test
 
 import (
+	"encoding/json"
 	"reflect"
 	"strings"
 	"testing"
@@ -401,4 +402,30 @@ func TestCollectionNone(t *testing.T) {
 func TestCollectionAll(t *testing.T) {
 	c := returnCollection()
 	assert.True(t, c.All(func(i int, item string) bool { return c.Contains(item) }), "Expected collection to contain all items.")
+}
+
+func TestCollectionMarshalJSON(t *testing.T) {
+	var buffer strings.Builder
+	encoder := json.NewEncoder(&buffer)
+	assert.Nil(t, encoder.Encode(returnCollection()), "Expected collection to successfully encode as valid JSON.")
+	assert.Equal(t, buffer.String(), "[\"apple\",\"orange\",\"strawberry\",\"cherry\",\"banana\",\"apricot\",\"avacado\",\"beans\",\"beets\",\"celery\",\"lettuce\"]\n", "Expected collection to be marshaled into the target JSON string.")
+
+	type Frog struct {
+		Name func(name string) string
+	}
+
+	type Dog struct {
+		Name string
+	}
+
+	busted := make(map[string]any, 0)
+
+	busted["dog"] = Dog{"Spot"}
+	busted["toes"] = "fingers for your feet"
+	busted["frog"] = Frog{func(name string) string { return "Ribbit" }}
+
+	buffer.Reset()
+	encoder = json.NewEncoder(&buffer)
+	err := encoder.Encode(collection.New(busted))
+	assert.NotNil(t, err, "Expected collection marshaling to exit with an error due to unsupported mixed types.")
 }
