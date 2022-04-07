@@ -107,11 +107,7 @@ func (c *Collection[T]) At(index int) (T, bool) {
 // IsEmpty returns a boolean value describing the empty state of the current
 // collection.
 func (c *Collection[T]) IsEmpty() bool {
-	if c.Length() > 0 {
-		return false
-	}
-
-	return true
+	return c.Length() <= 0
 }
 
 // Empty will reset the current collection to zero items. ( Chainable )
@@ -273,7 +269,7 @@ func (c *Collection[T]) Map(f func(int, T) T) (out Collection[T]) {
 // collection. ( Chainable )
 func (c *Collection[T]) Each(f func(int, T) bool) *Collection[T] {
 	for i, item := range c.items {
-		if exit := f(i, item); exit == true {
+		if exit := f(i, item); exit {
 			break
 		}
 	}
