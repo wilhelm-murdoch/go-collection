@@ -14,7 +14,7 @@ go get github.com/wilhelm-murdoch/go-collection
 ```
 # Reference
 
-{{ range . }}{{ range .Files.Items }}{{ range .Functions.Items }}{{ if and (.IsExported) (ne .Name "main") (not .IsTest) (not .IsExample) (not .IsBenchmark)}}* [{{ .Name }}](#{{ .Name }})
+{{ range . }}{{ range .Files.Items }}{{ range .Functions.Items }}{{ if and (.IsExported) (ne .Name "main") (not .IsTest) (not .IsExample) (not .IsBenchmark)}}* [{{ .Name }}](#Function-{{ .Name }})
 {{ end }}{{ end }}{{ end }}{{ end }}
 
 {{ range . }}{{ range .Files.Items }}{{ $path := .Path }}{{ range .Functions.Items }}{{ if and (.IsExported) (ne .Name "main") (not .IsTest) (not .IsExample) (not .IsBenchmark)}}### Function `{{ .Name }}`

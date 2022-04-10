@@ -3,6 +3,7 @@
 ![Build Status](https://github.com/wilhelm-murdoch/go-collection/actions/workflows/go.yml/badge.svg)
 [![GoDoc](https://godoc.org/github.com/wilhelm-murdoch/go-collection?status.svg)](https://pkg.go.dev/github.com/wilhelm-murdoch/go-collection)
 [![Go report](https://goreportcard.com/badge/github.com/wilhelm-murdoch/go-collection)](https://goreportcard.com/report/github.com/wilhelm-murdoch/go-collection)
+[![Stability: Active](https://masterminds.github.io/stability/active.svg)](https://masterminds.github.io/stability/active.html)
 
 A generic collection for Go with a few convenient methods. 
 
@@ -13,41 +14,41 @@ go get github.com/wilhelm-murdoch/go-collection
 ```
 # Reference
 
-* [New](#New)
-* [Items](#Items)
-* [Filter](#Filter)
-* [Slice](#Slice)
-* [Contains](#Contains)
-* [PushDistinct](#PushDistinct)
-* [Shift](#Shift)
-* [Unshift](#Unshift)
-* [At](#At)
-* [IsEmpty](#IsEmpty)
-* [Empty](#Empty)
-* [Find](#Find)
-* [FindIndex](#FindIndex)
-* [RandomIndex](#RandomIndex)
-* [Random](#Random)
-* [LastIndexOf](#LastIndexOf)
-* [Reduce](#Reduce)
-* [Reverse](#Reverse)
-* [Some](#Some)
-* [None](#None)
-* [All](#All)
-* [Push](#Push)
-* [Pop](#Pop)
-* [Length](#Length)
-* [Map](#Map)
-* [Each](#Each)
-* [Concat](#Concat)
-* [InsertAt](#InsertAt)
-* [InsertBefore](#InsertBefore)
-* [InsertAfter](#InsertAfter)
-* [AtFirst](#AtFirst)
-* [AtLast](#AtLast)
-* [Count](#Count)
-* [CountBy](#CountBy)
-* [MarshalJSON](#MarshalJSON)
+* [New](#Function-New)
+* [Items](#Function-Items)
+* [Filter](#Function-Filter)
+* [Slice](#Function-Slice)
+* [Contains](#Function-Contains)
+* [PushDistinct](#Function-PushDistinct)
+* [Shift](#Function-Shift)
+* [Unshift](#Function-Unshift)
+* [At](#Function-At)
+* [IsEmpty](#Function-IsEmpty)
+* [Empty](#Function-Empty)
+* [Find](#Function-Find)
+* [FindIndex](#Function-FindIndex)
+* [RandomIndex](#Function-RandomIndex)
+* [Random](#Function-Random)
+* [LastIndexOf](#Function-LastIndexOf)
+* [Reduce](#Function-Reduce)
+* [Reverse](#Function-Reverse)
+* [Some](#Function-Some)
+* [None](#Function-None)
+* [All](#Function-All)
+* [Push](#Function-Push)
+* [Pop](#Function-Pop)
+* [Length](#Function-Length)
+* [Map](#Function-Map)
+* [Each](#Function-Each)
+* [Concat](#Function-Concat)
+* [InsertAt](#Function-InsertAt)
+* [InsertBefore](#Function-InsertBefore)
+* [InsertAfter](#Function-InsertAfter)
+* [AtFirst](#Function-AtFirst)
+* [AtLast](#Function-AtLast)
+* [Count](#Function-Count)
+* [CountBy](#Function-CountBy)
+* [MarshalJSON](#Function-MarshalJSON)
 
 
 ### Function `New`
@@ -1020,48 +1021,6 @@ func main() {
 
 MarshalJSON implements the Marshaler interface so the current collection'sitems can be marshalled into valid JSON.
 
-```go
-package main
-
-import (
-  "fmt"
-  "strings"
-
-  "github.com/wilhelm-murdoch/go-collection"
-)
-
-func main() {
-    var buffer strings.Builder
-    encoder := json.NewEncoder(&buffer)
-    encoder.Encode(collection.New("apple", "orange", "strawberry"))
-    fmt.Println(buffer.String())
-}
-```
-```go
-// Output:
-// ["apple","orange","strawberry"]
-```
-```go
-package main
-
-import (
-  "fmt"
-  "strings"
-
-  "github.com/wilhelm-murdoch/go-collection"
-)
-
-func main() {
-    var buffer strings.Builder
-    encoder := json.NewEncoder(&buffer)
-    encoder.Encode(collection.New("apple", "orange", "strawberry"))
-    fmt.Println(buffer.String())
-}
-```
-```go
-// Output:
-// ["apple","orange","strawberry"]
-```
 ```go
 package main
 
