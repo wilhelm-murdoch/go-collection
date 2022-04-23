@@ -8,6 +8,54 @@ import (
 	"github.com/wilhelm-murdoch/go-collection"
 )
 
+func ExampleCollection_Sort_numeric() {
+	numbers := collection.New(1, 4, 2, 3)
+
+	fmt.Println("Unsorted:")
+	numbers.Each(func(i, n int) bool {
+		fmt.Print(" ", n)
+		return false
+	})
+
+	fmt.Println("\nSorted:")
+	numbers.Sort(func(i, j int) bool {
+		left, _ := numbers.At(i)
+		right, _ := numbers.At(j)
+		return left < right
+	}).Each(func(i, n int) bool {
+		fmt.Print(" ", n)
+		return false
+	})
+
+	// Output:
+	// Unsorted:
+	//  1 4 2 3
+	// Sorted:
+	//  1 2 3 4
+}
+
+func ExampleCollection_Sort_alpha() {
+	names := collection.New("wilhelm", "peter", "josh", "luke", "rob")
+
+	fmt.Println("Unsorted:")
+	fmt.Println(strings.Join(names.Items(), ","))
+
+	names.Sort(func(i, j int) bool {
+		left, _ := names.At(i)
+		right, _ := names.At(j)
+		return left < right
+	})
+
+	fmt.Println("Sorted:")
+	fmt.Println(strings.Join(names.Items(), ","))
+
+	// Output:
+	// Unsorted:
+	// wilhelm,peter,josh,luke,rob
+	// Sorted:
+	// josh,luke,peter,rob,wilhelm
+}
+
 func ExampleNew() {
 	fruits := collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot")
 	fmt.Println("Fruits:", fruits.Length())

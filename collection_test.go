@@ -14,6 +14,20 @@ func returnCollection() *collection.Collection[string] {
 	return collection.New("apple", "orange", "strawberry", "cherry", "banana", "apricot", "avacado", "beans", "beets", "celery", "lettuce")
 }
 
+func TestCollectionSort(t *testing.T) {
+	numbers := collection.New(1, 4, 2, 3)
+
+	numbers.Sort(func(i, j int) bool {
+		left, _ := numbers.At(i)
+		right, _ := numbers.At(j)
+		return left < right
+	})
+
+	sorted := []int{1, 2, 3, 4}
+
+	assert.Equal(t, numbers.Items(), sorted, "Expected a sorted slice.")
+}
+
 func TestCollectionPushDistinct(t *testing.T) {
 	c1 := returnCollection()
 

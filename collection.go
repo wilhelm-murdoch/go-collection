@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"math/rand"
 	"reflect"
+	"sort"
 	"time"
 )
 
@@ -23,6 +24,12 @@ func New[T any](items ...T) *Collection[T] {
 // Items returns the current collection's set of items.
 func (c *Collection[T]) Items() []T {
 	return c.items
+}
+
+// Sort sorts the collection given the provided less function. ( Chainable )
+func (c *Collection[T]) Sort(less func(i, j int) bool) *Collection[T] {
+	sort.Slice(c.items, less)
+	return c
 }
 
 // Filter returns a new collection with items that have passed predicate check.
