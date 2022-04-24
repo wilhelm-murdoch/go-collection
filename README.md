@@ -57,7 +57,7 @@ go get github.com/wilhelm-murdoch/go-collection
 * `func New[T any](items ...T) *Collection[T]` [#](collection.go#L18)
 * `collection.go:18:22` [#](collection.go#L18-L22)
 
-New returns a new collection of type T containing the specifieditems and their types. ( Chainable )
+New returns a new collection of type T containing the specified items and their types. ( Chainable ) 
 
 ```go
 package main
@@ -93,7 +93,7 @@ func main() {
 * `func (c *Collection[T]) Items() []T` [#](collection.go#L25)
 * `collection.go:25:27` [#](collection.go#L25-L27)
 
-Items returns the current collection's set of items.
+Items returns the current collection's set of items. 
 
 ```go
 package main
@@ -123,7 +123,7 @@ func main() {
 * `func (c *Collection[T]) Sort(less func(i, j int) bool) *Collection[T]` [#](collection.go#L30)
 * `collection.go:30:33` [#](collection.go#L30-L33)
 
-Sort sorts the collection given the provided less function. ( Chainable )
+Sort sorts the collection given the provided less function. ( Chainable ) 
 
 ```go
 package main
@@ -199,7 +199,7 @@ func main() {
 * `func (c *Collection[T]) Filter(f func(T) bool) (out Collection[T])` [#](collection.go#L37)
 * `collection.go:37:45` [#](collection.go#L37-L45)
 
-Filter returns a new collection with items that have passed predicate check.( Chainable )
+Filter returns a new collection with items that have passed predicate check. ( Chainable ) 
 
 ```go
 package main
@@ -230,7 +230,7 @@ func main() {
 * `func (c *Collection[T]) Slice(from, to int) *Collection[T]` [#](collection.go#L49)
 * `collection.go:49:59` [#](collection.go#L49-L59)
 
-Slice returns a new collection containing a slice of the current collectionstarting with `from` and `to` indexes. ( Chainable )
+Slice returns a new collection containing a slice of the current collection starting with `from` and `to` indexes. ( Chainable ) 
 
 ```go
 package main
@@ -258,7 +258,7 @@ func main() {
 * `func (c *Collection[T]) Contains(item T) (found bool)` [#](collection.go#L65)
 * `collection.go:65:73` [#](collection.go#L65-L73)
 
-Contains returns true if an item is present in the current collection. Thismethod makes use of `reflect.DeepEqual` to ensure an absolute match. If youwish to check by a specific field within a slice of objects, use`collection.ContainsBy` instead.
+Contains returns true if an item is present in the current collection. This method makes use of `reflect.DeepEqual` to ensure an absolute match. If you wish to check by a specific field within a slice of objects, use `collection.ContainsBy` instead. 
 
 ```go
 package main
@@ -282,7 +282,7 @@ func main() {
 * `func (c *Collection[T]) ContainsBy(f func(i int, item T) bool) (found bool)` [#](collection.go#L78)
 * `collection.go:78:86` [#](collection.go#L78-L86)
 
-ContainsBy returns true if an item in the current collection matches thespecified predicate function. This is useful if you have a slice of objectsand you wish to check the existence of a specific field value.
+ContainsBy returns true if an item in the current collection matches the specified predicate function. This is useful if you have a slice of objects and you wish to check the existence of a specific field value. 
 
 ```go
 package main
@@ -321,7 +321,7 @@ func main() {
 * `func (c *Collection[T]) PushDistinct(items ...T) int` [#](collection.go#L92)
 * `collection.go:92:100` [#](collection.go#L92-L100)
 
-PushDistinct method appends one or more distinct items to the currentcollection, returning the new length. Items that already exist within thecurrent collection will be ignored. You can check for this by comparing oldv.s. new collection lengths.
+PushDistinct method appends one or more distinct items to the current collection, returning the new length. Items that already exist within the current collection will be ignored. You can check for this by comparing old v.s. new collection lengths. 
 
 ```go
 package main
@@ -355,7 +355,7 @@ func main() {
 * `func (c *Collection[T]) Shift() T` [#](collection.go#L104)
 * `collection.go:104:109` [#](collection.go#L104-L109)
 
-Shift method removes the first item from the current collection, thenreturns that item.
+Shift method removes the first item from the current collection, then returns that item. 
 
 ```go
 package main
@@ -379,7 +379,7 @@ func main() {
 * `func (c *Collection[T]) Unshift(item T) int` [#](collection.go#L113)
 * `collection.go:113:116` [#](collection.go#L113-L116)
 
-Unshift method appends one item to the beginning of the current collection,returning the new length of the collection.
+Unshift method appends one item to the beginning of the current collection, returning the new length of the collection. 
 
 ```go
 package main
@@ -416,7 +416,7 @@ func main() {
 * `func (c *Collection[T]) At(index int) (T, bool)` [#](collection.go#L121)
 * `collection.go:121:128` [#](collection.go#L121-L128)
 
-At attempts to return the item associated with the specified index for thecurrent collection along with a boolean value stating whether or not an itemcould be found.
+At attempts to return the item associated with the specified index for the current collection along with a boolean value stating whether or not an item could be found. 
 
 ```go
 package main
@@ -442,7 +442,7 @@ func main() {
 * `func (c *Collection[T]) IsEmpty() bool` [#](collection.go#L132)
 * `collection.go:132:134` [#](collection.go#L132-L134)
 
-IsEmpty returns a boolean value describing the empty state of the currentcollection.
+IsEmpty returns a boolean value describing the empty state of the current collection. 
 
 ```go
 package main
@@ -473,7 +473,7 @@ func main() {
 * `func (c *Collection[T]) Empty() *Collection[T]` [#](collection.go#L137)
 * `collection.go:137:141` [#](collection.go#L137-L141)
 
-Empty will reset the current collection to zero items. ( Chainable )
+Empty will reset the current collection to zero items. ( Chainable ) 
 
 ```go
 package main
@@ -497,7 +497,7 @@ func main() {
 * `func (c *Collection[T]) Find(f func(i int, item T) bool) (item T)` [#](collection.go#L146)
 * `collection.go:146:154` [#](collection.go#L146-L154)
 
-Find returns the first item in the provided current collectionthat satisfiesthe provided testing function. If no items satisfy the testing function,a <nil> value is returned.
+Find returns the first item in the provided current collectionthat satisfies the provided testing function. If no items satisfy the testing function, a <nil> value is returned. 
 
 ```go
 package main
@@ -523,7 +523,7 @@ func main() {
 * `func (c *Collection[T]) FindIndex(f func(i int, item T) bool) int` [#](collection.go#L159)
 * `collection.go:159:167` [#](collection.go#L159-L167)
 
-FindIndex returns the index of the first item in the specified collectionthat satisfies the provided testing function. Otherwise, it returns -1,indicating that no element passed the test.
+FindIndex returns the index of the first item in the specified collection that satisfies the provided testing function. Otherwise, it returns -1, indicating that no element passed the test. 
 
 ```go
 package main
@@ -549,7 +549,7 @@ func main() {
 * `func (c *Collection[T]) RandomIndex() int` [#](collection.go#L171)
 * `collection.go:171:174` [#](collection.go#L171-L174)
 
-RandomIndex returns the index associated with a random item from the currentcollection.
+RandomIndex returns the index associated with a random item from the current collection. 
 
 ```go
 package main
@@ -571,7 +571,7 @@ func main() {
 * `func (c *Collection[T]) Random() (T, bool)` [#](collection.go#L177)
 * `collection.go:177:180` [#](collection.go#L177-L180)
 
-Random returns a random item from the current collection.
+Random returns a random item from the current collection. 
 
 ```go
 package main
@@ -596,7 +596,7 @@ func main() {
 * `func (c *Collection[T]) LastIndexOf(item T) int` [#](collection.go#L184)
 * `collection.go:184:193` [#](collection.go#L184-L193)
 
-LastIndexOf returns the last index at which a given item can be found in thecurrent collection, or -1 if it is not present.
+LastIndexOf returns the last index at which a given item can be found in the current collection, or -1 if it is not present. 
 
 ```go
 package main
@@ -620,7 +620,7 @@ func main() {
 * `func (c *Collection[T]) Reduce(f func(i int, item, accumulator T) T) (out T)` [#](collection.go#L199)
 * `collection.go:199:205` [#](collection.go#L199-L205)
 
-Reduce reduces a collection to a single value. The value is calculated byaccumulating the result of running each item in the collection through anaccumulator function. Each successive invocation is supplied with the returnvalue returned by the previous call.
+Reduce reduces a collection to a single value. The value is calculated by accumulating the result of running each item in the collection through an accumulator function. Each successive invocation is supplied with the return value returned by the previous call. 
 
 ```go
 package main
@@ -648,7 +648,7 @@ func main() {
 * `func (c *Collection[T]) Reverse() *Collection[T]` [#](collection.go#L209)
 * `collection.go:209:214` [#](collection.go#L209-L214)
 
-Reverse the current collection so that the first item becomes the last, thesecond item becomes the second to last, and so on. ( Chainable )
+Reverse the current collection so that the first item becomes the last, the second item becomes the second to last, and so on. ( Chainable ) 
 
 ```go
 package main
@@ -678,7 +678,7 @@ func main() {
 * `func (c *Collection[T]) Some(f func(i int, item T) bool) bool` [#](collection.go#L218)
 * `collection.go:218:226` [#](collection.go#L218-L226)
 
-Some returns a true value if at least one item within the current collectionresolves to true as defined by the predicate function f.
+Some returns a true value if at least one item within the current collection resolves to true as defined by the predicate function f. 
 
 ```go
 package main
@@ -706,7 +706,7 @@ func main() {
 * `func (c *Collection[T]) None(f func(i int, item T) bool) bool` [#](collection.go#L230)
 * `collection.go:230:239` [#](collection.go#L230-L239)
 
-None returns a true value if no items within the current collection resolve totrue as defined by the predicate function f.
+None returns a true value if no items within the current collection resolve to true as defined by the predicate function f. 
 
 ```go
 package main
@@ -734,7 +734,7 @@ func main() {
 * `func (c *Collection[T]) All(f func(i int, item T) bool) bool` [#](collection.go#L243)
 * `collection.go:243:252` [#](collection.go#L243-L252)
 
-All returns a true value if all items within the current collection resolve totrue as defined by the predicate function f.
+All returns a true value if all items within the current collection resolve to true as defined by the predicate function f. 
 
 ```go
 package main
@@ -762,7 +762,7 @@ func main() {
 * `func (c *Collection[T]) Push(items ...T) int` [#](collection.go#L256)
 * `collection.go:256:259` [#](collection.go#L256-L259)
 
-Push method appends one or more items to the end of a collection, returningthe new length.
+Push method appends one or more items to the end of a collection, returning the new length. 
 
 ```go
 package main
@@ -797,7 +797,7 @@ func main() {
 * `func (c *Collection[T]) Pop() (out T, found bool)` [#](collection.go#L263)
 * `collection.go:263:272` [#](collection.go#L263-L272)
 
-Pop method removes the last item from the current collection and thenreturns that item.
+Pop method removes the last item from the current collection and then returns that item. 
 
 ```go
 package main
@@ -822,7 +822,7 @@ func main() {
 * `func (c *Collection[T]) Length() int` [#](collection.go#L275)
 * `collection.go:275:277` [#](collection.go#L275-L277)
 
-Length returns number of items associated with the current collection.
+Length returns number of items associated with the current collection. 
 
 ```go
 package main
@@ -846,7 +846,7 @@ func main() {
 * `func (c *Collection[T]) Map(f func(int, T) T) (out Collection[T])` [#](collection.go#L282)
 * `collection.go:282:288` [#](collection.go#L282-L288)
 
-Map method creates to a new collection by using callback invocation resulton each array item. On each iteration f is invoked with arguments: index andcurrent item. It should return the new collection. ( Chainable )
+Map method creates to a new collection by using callback invocation result on each array item. On each iteration f is invoked with arguments: index and current item. It should return the new collection. ( Chainable ) 
 
 ```go
 package main
@@ -879,7 +879,7 @@ func main() {
 * `func (c *Collection[T]) Each(f func(int, T) bool) *Collection[T]` [#](collection.go#L293)
 * `collection.go:293:301` [#](collection.go#L293-L301)
 
-Each iterates through the specified list of items executes the specifiedcallback on each item. This method returns the current instance ofcollection. ( Chainable )
+Each iterates through the specified list of items executes the specified callback on each item. This method returns the current instance of collection. ( Chainable ) 
 
 ```go
 package main
@@ -908,7 +908,7 @@ func main() {
 * `func (c *Collection[T]) Concat(items []T) *Collection[T]` [#](collection.go#L305)
 * `collection.go:305:308` [#](collection.go#L305-L308)
 
-Concat merges two slices of items. This method returns the current instancecollection with the specified slice of items appended to it. ( Chainable )
+Concat merges two slices of items. This method returns the current instance collection with the specified slice of items appended to it. ( Chainable ) 
 
 ```go
 package main
@@ -940,7 +940,7 @@ func main() {
 * `func (c *Collection[T]) InsertAt(item T, index int) *Collection[T]` [#](collection.go#L314)
 * `collection.go:314:329` [#](collection.go#L314-L329)
 
-InsertAt inserts the specified item at the specified index and returns thecurrent collection. If the specified index is less than 0, 0 is used. If anindex greater than the size of the collectio nis specified, c.Push is usedinstead. ( Chainable )
+InsertAt inserts the specified item at the specified index and returns the current collection. If the specified index is less than 0, 0 is used. If an index greater than the size of the collectio nis specified, c.Push is used instead. ( Chainable ) 
 
 ```go
 package main
@@ -970,7 +970,7 @@ func main() {
 * `func (c *Collection[T]) InsertBefore(item T, index int) *Collection[T]` [#](collection.go#L335)
 * `collection.go:335:337` [#](collection.go#L335-L337)
 
-InsertBefore inserts the specified item before the specified index andreturns the current collection. If the specified index is less than 0,c.Unshift is used. If an index greater than the size of the collection isspecified, c.Push is used instead. ( Chainable )
+InsertBefore inserts the specified item before the specified index and returns the current collection. If the specified index is less than 0, c.Unshift is used. If an index greater than the size of the collection is specified, c.Push is used instead. ( Chainable ) 
 
 ```go
 package main
@@ -1000,7 +1000,7 @@ func main() {
 * `func (c *Collection[T]) InsertAfter(item T, index int) *Collection[T]` [#](collection.go#L343)
 * `collection.go:343:345` [#](collection.go#L343-L345)
 
-InsertAfter inserts the specified item after the specified index and returnsthe current collection. If the specified index is less than 0, 0 is used. Ifan index greater than the size of the collectio nis specified, c.Push is usedinstead. ( Chainable )
+InsertAfter inserts the specified item after the specified index and returns the current collection. If the specified index is less than 0, 0 is used. If an index greater than the size of the collectio nis specified, c.Push is used instead. ( Chainable ) 
 
 ```go
 package main
@@ -1030,7 +1030,7 @@ func main() {
 * `func (c *Collection[T]) AtFirst() (T, bool)` [#](collection.go#L349)
 * `collection.go:349:351` [#](collection.go#L349-L351)
 
-AtFirst attempts to return the first item of the collection along with aboolean value stating whether or not an item could be found.
+AtFirst attempts to return the first item of the collection along with a boolean value stating whether or not an item could be found. 
 
 ```go
 package main
@@ -1056,7 +1056,7 @@ func main() {
 * `func (c *Collection[T]) AtLast() (T, bool)` [#](collection.go#L355)
 * `collection.go:355:357` [#](collection.go#L355-L357)
 
-AtLast attempts to return the last item of the collection along with aboolean value stating whether or not an item could be found.
+AtLast attempts to return the last item of the collection along with a boolean value stating whether or not an item could be found. 
 
 ```go
 package main
@@ -1082,7 +1082,7 @@ func main() {
 * `func (c *Collection[T]) Count(item T) (count int)` [#](collection.go#L360)
 * `collection.go:360:368` [#](collection.go#L360-L368)
 
-Count counts the number of items in the collection that compare equal to value.
+Count counts the number of items in the collection that compare equal to value. 
 
 ```go
 package main
@@ -1108,7 +1108,7 @@ func main() {
 * `func (c *Collection[T]) CountBy(f func(T) bool) (count int)` [#](collection.go#L371)
 * `collection.go:371:379` [#](collection.go#L371-L379)
 
-CountBy counts the number of items in the collection for which predicate is true.
+CountBy counts the number of items in the collection for which predicate is true. 
 
 ```go
 package main
@@ -1136,7 +1136,7 @@ func main() {
 * `func (c *Collection[T]) MarshalJSON() ([]byte, error)` [#](collection.go#L383)
 * `collection.go:383:392` [#](collection.go#L383-L392)
 
-MarshalJSON implements the Marshaler interface so the current collection'sitems can be marshalled into valid JSON.
+MarshalJSON implements the Marshaler interface so the current collection's items can be marshalled into valid JSON. 
 
 ```go
 package main

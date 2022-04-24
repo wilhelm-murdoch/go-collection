@@ -21,7 +21,7 @@ go get github.com/wilhelm-murdoch/go-collection
 * `{{ trim .Signature }}` [#]({{ $path }}#L{{ .LineStart }})
 * `{{ $path }}:{{ .LineStart }}:{{ .LineEnd }}` [#]({{ $path }}#L{{ .LineStart }}-L{{ .LineEnd }})
 
-{{ .Doc | replace "\n" "" }}
+{{ .Doc | replace "\n" " " }}
 {{ range .Examples.Items }}
 ```go
 package main
