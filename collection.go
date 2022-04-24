@@ -41,7 +41,7 @@ func (c *Collection[T]) Filter(f func(T) bool) (out Collection[T]) {
 		}
 	}
 
-	return
+	return out
 }
 
 // Slice returns a new collection containing a slice of the current collection
@@ -58,7 +58,10 @@ func (c *Collection[T]) Slice(from, to int) *Collection[T] {
 	return New(c.items[from:to]...)
 }
 
-// Contains returns true if an item is present in the current collection.
+// Contains returns true if an item is present in the current collection. This
+// method makes use of `reflect.DeepEqual` to ensure an absolute match. If you
+// wish to check by a specific field within a slice of objects, use
+// `collection.ContainsBy` instead.
 func (c *Collection[T]) Contains(item T) (found bool) {
 	for _, inner := range c.items {
 		if reflect.DeepEqual(item, inner) {
@@ -66,7 +69,20 @@ func (c *Collection[T]) Contains(item T) (found bool) {
 			break
 		}
 	}
-	return
+	return found
+}
+
+// ContainsBy returns true if an item in the current collection matches the
+// specified predicate function. This is useful if you have a slice of objects
+// and you wish to check the existense of a specific field value.
+func (c *Collection[T]) ContainsBy(f func(i int, item T) bool) (found bool) {
+	for i, item := range c.items {
+		if f(i, item) {
+			found = true
+			break
+		}
+	}
+	return found
 }
 
 // PushDistinct method appends one or more distinct items to the current
@@ -134,7 +150,7 @@ func (c *Collection[T]) Find(f func(i int, item T) bool) (item T) {
 		}
 	}
 
-	return
+	return item
 }
 
 // FindIndex returns the index of the first item in the specified collection
@@ -185,7 +201,7 @@ func (c *Collection[T]) Reduce(f func(i int, item, accumulator T) T) (out T) {
 		out = f(i, item, out)
 	}
 
-	return
+	return out
 }
 
 // Reverse the current collection so that the first item becomes the last, the
@@ -268,7 +284,7 @@ func (c *Collection[T]) Map(f func(int, T) T) (out Collection[T]) {
 		out.Push(f(i, item))
 	}
 
-	return
+	return out
 }
 
 // Each iterates through the specified list of items executes the specified
@@ -347,6 +363,7 @@ func (c *Collection[T]) Count(item T) (count int) {
 			count++
 		}
 	}
+
 	return
 }
 
@@ -357,7 +374,8 @@ func (c *Collection[T]) CountBy(f func(T) bool) (count int) {
 			count++
 		}
 	}
-	return
+
+	return count
 }
 
 // MarshalJSON implements the Marshaler interface so the current collection's

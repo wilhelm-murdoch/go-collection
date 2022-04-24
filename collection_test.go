@@ -361,6 +361,16 @@ func TestCollectionContains(t *testing.T) {
 	assert.False(t, c.Contains("carrots"), "Expected a value, but got nothing instead.")
 }
 
+func TestCollectionContainsBy(t *testing.T) {
+	c := returnCollection()
+
+	found := c.ContainsBy(func(i int, item string) bool {
+		return strings.HasSuffix(item, "erry")
+	})
+
+	assert.True(t, found, "Expected to contain at least one value ending in `erry`, but got nothing instead.")
+}
+
 func TestCollectionSlice(t *testing.T) {
 	c := returnCollection()
 

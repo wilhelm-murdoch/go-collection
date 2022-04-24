@@ -20,6 +20,7 @@ go get github.com/wilhelm-murdoch/go-collection
 * [Filter](#Function-Filter)
 * [Slice](#Function-Slice)
 * [Contains](#Function-Contains)
+* [ContainsBy](#Function-ContainsBy)
 * [PushDistinct](#Function-PushDistinct)
 * [Shift](#Function-Shift)
 * [Unshift](#Function-Unshift)
@@ -254,10 +255,10 @@ func main() {
 // orange
 ```
 ### Function `Contains`
-* `func (c *Collection[T]) Contains(item T) (found bool)` [#](collection.go#L62)
-* `collection.go:62:70` [#](collection.go#L62-L70)
+* `func (c *Collection[T]) Contains(item T) (found bool)` [#](collection.go#L65)
+* `collection.go:65:73` [#](collection.go#L65-L73)
 
-Contains returns true if an item is present in the current collection.
+Contains returns true if an item is present in the current collection. Thismethod makes use of `reflect.DeepEqual` to ensure an absolute match. If youwish to check by a specific field within a slice of objects, use`collection.ContainsBy` instead.
 
 ```go
 package main
@@ -277,9 +278,48 @@ func main() {
 // Output:
 // false
 ```
+### Function `ContainsBy`
+* `func (c *Collection[T]) ContainsBy(f func(i int, item T) bool) (found bool)` [#](collection.go#L78)
+* `collection.go:78:86` [#](collection.go#L78-L86)
+
+ContainsBy returns true if an item in the current collection matches thespecified predicate function. This is useful if you have a slice of objectsand you wish to check the existense of a specific field value.
+
+```go
+package main
+
+import (
+  "fmt"
+  "strings"
+
+  "github.com/wilhelm-murdoch/go-collection"
+)
+
+func main() {
+    type Person struct {
+    	Name string
+    	Age  int
+    }
+    
+    people := []Person{
+    	{"wilhelm", 31},
+    	{"luke", 42},
+    	{"rob", 17},
+    	{"peter", 26},
+    	{"josh", 26},
+    }
+    
+    fmt.Println(collection.New(people...).ContainsBy(func(i int, p Person) bool {
+    	return p.Age < 20
+    }))
+}
+```
+```go
+// Output:
+// true
+```
 ### Function `PushDistinct`
-* `func (c *Collection[T]) PushDistinct(items ...T) int` [#](collection.go#L76)
-* `collection.go:76:84` [#](collection.go#L76-L84)
+* `func (c *Collection[T]) PushDistinct(items ...T) int` [#](collection.go#L92)
+* `collection.go:92:100` [#](collection.go#L92-L100)
 
 PushDistinct method appends one or more distinct items to the currentcollection, returning the new length. Items that already exist within thecurrent collection will be ignored. You can check for this by comparing oldv.s. new collection lengths.
 
@@ -312,8 +352,8 @@ func main() {
 // watermelon
 ```
 ### Function `Shift`
-* `func (c *Collection[T]) Shift() T` [#](collection.go#L88)
-* `collection.go:88:93` [#](collection.go#L88-L93)
+* `func (c *Collection[T]) Shift() T` [#](collection.go#L104)
+* `collection.go:104:109` [#](collection.go#L104-L109)
 
 Shift method removes the first item from the current collection, thenreturns that item.
 
@@ -336,8 +376,8 @@ func main() {
 // apple
 ```
 ### Function `Unshift`
-* `func (c *Collection[T]) Unshift(item T) int` [#](collection.go#L97)
-* `collection.go:97:100` [#](collection.go#L97-L100)
+* `func (c *Collection[T]) Unshift(item T) int` [#](collection.go#L113)
+* `collection.go:113:116` [#](collection.go#L113-L116)
 
 Unshift method appends one item to the beginning of the current collection,returning the new length of the collection.
 
@@ -373,8 +413,8 @@ func main() {
 // 3 strawberry
 ```
 ### Function `At`
-* `func (c *Collection[T]) At(index int) (T, bool)` [#](collection.go#L105)
-* `collection.go:105:112` [#](collection.go#L105-L112)
+* `func (c *Collection[T]) At(index int) (T, bool)` [#](collection.go#L121)
+* `collection.go:121:128` [#](collection.go#L121-L128)
 
 At attempts to return the item associated with the specified index for thecurrent collection along with a boolean value stating whether or not an itemcould be found.
 
@@ -399,8 +439,8 @@ func main() {
 // orange true
 ```
 ### Function `IsEmpty`
-* `func (c *Collection[T]) IsEmpty() bool` [#](collection.go#L116)
-* `collection.go:116:118` [#](collection.go#L116-L118)
+* `func (c *Collection[T]) IsEmpty() bool` [#](collection.go#L132)
+* `collection.go:132:134` [#](collection.go#L132-L134)
 
 IsEmpty returns a boolean value describing the empty state of the currentcollection.
 
@@ -430,8 +470,8 @@ func main() {
 // true
 ```
 ### Function `Empty`
-* `func (c *Collection[T]) Empty() *Collection[T]` [#](collection.go#L121)
-* `collection.go:121:125` [#](collection.go#L121-L125)
+* `func (c *Collection[T]) Empty() *Collection[T]` [#](collection.go#L137)
+* `collection.go:137:141` [#](collection.go#L137-L141)
 
 Empty will reset the current collection to zero items. ( Chainable )
 
@@ -454,8 +494,8 @@ func main() {
 // 0
 ```
 ### Function `Find`
-* `func (c *Collection[T]) Find(f func(i int, item T) bool) (item T)` [#](collection.go#L130)
-* `collection.go:130:138` [#](collection.go#L130-L138)
+* `func (c *Collection[T]) Find(f func(i int, item T) bool) (item T)` [#](collection.go#L146)
+* `collection.go:146:154` [#](collection.go#L146-L154)
 
 Find returns the first item in the provided current collectionthat satisfiesthe provided testing function. If no items satisfy the testing function,a <nil> value is returned.
 
@@ -480,8 +520,8 @@ func main() {
 // orange
 ```
 ### Function `FindIndex`
-* `func (c *Collection[T]) FindIndex(f func(i int, item T) bool) int` [#](collection.go#L143)
-* `collection.go:143:151` [#](collection.go#L143-L151)
+* `func (c *Collection[T]) FindIndex(f func(i int, item T) bool) int` [#](collection.go#L159)
+* `collection.go:159:167` [#](collection.go#L159-L167)
 
 FindIndex returns the index of the first item in the specified collectionthat satisfies the provided testing function. Otherwise, it returns -1,indicating that no element passed the test.
 
@@ -506,8 +546,8 @@ func main() {
 // 1
 ```
 ### Function `RandomIndex`
-* `func (c *Collection[T]) RandomIndex() int` [#](collection.go#L155)
-* `collection.go:155:158` [#](collection.go#L155-L158)
+* `func (c *Collection[T]) RandomIndex() int` [#](collection.go#L171)
+* `collection.go:171:174` [#](collection.go#L171-L174)
 
 RandomIndex returns the index associated with a random item from the currentcollection.
 
@@ -528,8 +568,8 @@ func main() {
 ```
 
 ### Function `Random`
-* `func (c *Collection[T]) Random() (T, bool)` [#](collection.go#L161)
-* `collection.go:161:164` [#](collection.go#L161-L164)
+* `func (c *Collection[T]) Random() (T, bool)` [#](collection.go#L177)
+* `collection.go:177:180` [#](collection.go#L177-L180)
 
 Random returns a random item from the current collection.
 
@@ -553,8 +593,8 @@ func main() {
 ```
 
 ### Function `LastIndexOf`
-* `func (c *Collection[T]) LastIndexOf(item T) int` [#](collection.go#L168)
-* `collection.go:168:177` [#](collection.go#L168-L177)
+* `func (c *Collection[T]) LastIndexOf(item T) int` [#](collection.go#L184)
+* `collection.go:184:193` [#](collection.go#L184-L193)
 
 LastIndexOf returns the last index at which a given item can be found in thecurrent collection, or -1 if it is not present.
 
@@ -577,8 +617,8 @@ func main() {
 // 2
 ```
 ### Function `Reduce`
-* `func (c *Collection[T]) Reduce(f func(i int, item, accumulator T) T) (out T)` [#](collection.go#L183)
-* `collection.go:183:189` [#](collection.go#L183-L189)
+* `func (c *Collection[T]) Reduce(f func(i int, item, accumulator T) T) (out T)` [#](collection.go#L199)
+* `collection.go:199:205` [#](collection.go#L199-L205)
 
 Reduce reduces a collection to a single value. The value is calculated byaccumulating the result of running each item in the collection through anaccumulator function. Each successive invocation is supplied with the returnvalue returned by the previous call.
 
@@ -605,8 +645,8 @@ func main() {
 // appleorangestrawberry
 ```
 ### Function `Reverse`
-* `func (c *Collection[T]) Reverse() *Collection[T]` [#](collection.go#L193)
-* `collection.go:193:198` [#](collection.go#L193-L198)
+* `func (c *Collection[T]) Reverse() *Collection[T]` [#](collection.go#L209)
+* `collection.go:209:214` [#](collection.go#L209-L214)
 
 Reverse the current collection so that the first item becomes the last, thesecond item becomes the second to last, and so on. ( Chainable )
 
@@ -635,8 +675,8 @@ func main() {
 // 3 apple
 ```
 ### Function `Some`
-* `func (c *Collection[T]) Some(f func(i int, item T) bool) bool` [#](collection.go#L202)
-* `collection.go:202:210` [#](collection.go#L202-L210)
+* `func (c *Collection[T]) Some(f func(i int, item T) bool) bool` [#](collection.go#L218)
+* `collection.go:218:226` [#](collection.go#L218-L226)
 
 Some returns a true value if at least one item within the current collectionresolves to true as defined by the predicate function f.
 
@@ -663,8 +703,8 @@ func main() {
 // Found "orange"? true
 ```
 ### Function `None`
-* `func (c *Collection[T]) None(f func(i int, item T) bool) bool` [#](collection.go#L214)
-* `collection.go:214:223` [#](collection.go#L214-L223)
+* `func (c *Collection[T]) None(f func(i int, item T) bool) bool` [#](collection.go#L230)
+* `collection.go:230:239` [#](collection.go#L230-L239)
 
 None returns a true value if no items within the current collection resolve totrue as defined by the predicate function f.
 
@@ -691,8 +731,8 @@ func main() {
 // Found "blackberry"? false
 ```
 ### Function `All`
-* `func (c *Collection[T]) All(f func(i int, item T) bool) bool` [#](collection.go#L227)
-* `collection.go:227:236` [#](collection.go#L227-L236)
+* `func (c *Collection[T]) All(f func(i int, item T) bool) bool` [#](collection.go#L243)
+* `collection.go:243:252` [#](collection.go#L243-L252)
 
 All returns a true value if all items within the current collection resolve totrue as defined by the predicate function f.
 
@@ -719,8 +759,8 @@ func main() {
 // Contains all items? true
 ```
 ### Function `Push`
-* `func (c *Collection[T]) Push(items ...T) int` [#](collection.go#L240)
-* `collection.go:240:243` [#](collection.go#L240-L243)
+* `func (c *Collection[T]) Push(items ...T) int` [#](collection.go#L256)
+* `collection.go:256:259` [#](collection.go#L256-L259)
 
 Push method appends one or more items to the end of a collection, returningthe new length.
 
@@ -754,8 +794,8 @@ func main() {
 // 4 watermelon
 ```
 ### Function `Pop`
-* `func (c *Collection[T]) Pop() (out T, found bool)` [#](collection.go#L247)
-* `collection.go:247:256` [#](collection.go#L247-L256)
+* `func (c *Collection[T]) Pop() (out T, found bool)` [#](collection.go#L263)
+* `collection.go:263:272` [#](collection.go#L263-L272)
 
 Pop method removes the last item from the current collection and thenreturns that item.
 
@@ -779,8 +819,8 @@ func main() {
 // strawberry true
 ```
 ### Function `Length`
-* `func (c *Collection[T]) Length() int` [#](collection.go#L259)
-* `collection.go:259:261` [#](collection.go#L259-L261)
+* `func (c *Collection[T]) Length() int` [#](collection.go#L275)
+* `collection.go:275:277` [#](collection.go#L275-L277)
 
 Length returns number of items associated with the current collection.
 
@@ -803,8 +843,8 @@ func main() {
 // Collection Length: 3
 ```
 ### Function `Map`
-* `func (c *Collection[T]) Map(f func(int, T) T) (out Collection[T])` [#](collection.go#L266)
-* `collection.go:266:272` [#](collection.go#L266-L272)
+* `func (c *Collection[T]) Map(f func(int, T) T) (out Collection[T])` [#](collection.go#L282)
+* `collection.go:282:288` [#](collection.go#L282-L288)
 
 Map method creates to a new collection by using callback invocation resulton each array item. On each iteration f is invoked with arguments: index andcurrent item. It should return the new collection. ( Chainable )
 
@@ -836,8 +876,8 @@ func main() {
 // 2 The strawberry is yummo!
 ```
 ### Function `Each`
-* `func (c *Collection[T]) Each(f func(int, T) bool) *Collection[T]` [#](collection.go#L277)
-* `collection.go:277:285` [#](collection.go#L277-L285)
+* `func (c *Collection[T]) Each(f func(int, T) bool) *Collection[T]` [#](collection.go#L293)
+* `collection.go:293:301` [#](collection.go#L293-L301)
 
 Each iterates through the specified list of items executes the specifiedcallback on each item. This method returns the current instance ofcollection. ( Chainable )
 
@@ -865,8 +905,8 @@ func main() {
 // 2 strawberry
 ```
 ### Function `Concat`
-* `func (c *Collection[T]) Concat(items []T) *Collection[T]` [#](collection.go#L289)
-* `collection.go:289:292` [#](collection.go#L289-L292)
+* `func (c *Collection[T]) Concat(items []T) *Collection[T]` [#](collection.go#L305)
+* `collection.go:305:308` [#](collection.go#L305-L308)
 
 Concat merges two slices of items. This method returns the current instancecollection with the specified slice of items appended to it. ( Chainable )
 
@@ -897,8 +937,8 @@ func main() {
 // horse
 ```
 ### Function `InsertAt`
-* `func (c *Collection[T]) InsertAt(item T, index int) *Collection[T]` [#](collection.go#L298)
-* `collection.go:298:313` [#](collection.go#L298-L313)
+* `func (c *Collection[T]) InsertAt(item T, index int) *Collection[T]` [#](collection.go#L314)
+* `collection.go:314:329` [#](collection.go#L314-L329)
 
 InsertAt inserts the specified item at the specified index and returns thecurrent collection. If the specified index is less than 0, 0 is used. If anindex greater than the size of the collectio nis specified, c.Push is usedinstead. ( Chainable )
 
@@ -927,8 +967,8 @@ func main() {
 // 3 strawberry
 ```
 ### Function `InsertBefore`
-* `func (c *Collection[T]) InsertBefore(item T, index int) *Collection[T]` [#](collection.go#L319)
-* `collection.go:319:321` [#](collection.go#L319-L321)
+* `func (c *Collection[T]) InsertBefore(item T, index int) *Collection[T]` [#](collection.go#L335)
+* `collection.go:335:337` [#](collection.go#L335-L337)
 
 InsertBefore inserts the specified item before the specified index andreturns the current collection. If the specified index is less than 0,c.Unshift is used. If an index greater than the size of the collection isspecified, c.Push is used instead. ( Chainable )
 
@@ -957,8 +997,8 @@ func main() {
 // 3 strawberry
 ```
 ### Function `InsertAfter`
-* `func (c *Collection[T]) InsertAfter(item T, index int) *Collection[T]` [#](collection.go#L327)
-* `collection.go:327:329` [#](collection.go#L327-L329)
+* `func (c *Collection[T]) InsertAfter(item T, index int) *Collection[T]` [#](collection.go#L343)
+* `collection.go:343:345` [#](collection.go#L343-L345)
 
 InsertAfter inserts the specified item after the specified index and returnsthe current collection. If the specified index is less than 0, 0 is used. Ifan index greater than the size of the collectio nis specified, c.Push is usedinstead. ( Chainable )
 
@@ -987,8 +1027,8 @@ func main() {
 // 3 strawberry
 ```
 ### Function `AtFirst`
-* `func (c *Collection[T]) AtFirst() (T, bool)` [#](collection.go#L333)
-* `collection.go:333:335` [#](collection.go#L333-L335)
+* `func (c *Collection[T]) AtFirst() (T, bool)` [#](collection.go#L349)
+* `collection.go:349:351` [#](collection.go#L349-L351)
 
 AtFirst attempts to return the first item of the collection along with aboolean value stating whether or not an item could be found.
 
@@ -1013,8 +1053,8 @@ func main() {
 // apple true
 ```
 ### Function `AtLast`
-* `func (c *Collection[T]) AtLast() (T, bool)` [#](collection.go#L339)
-* `collection.go:339:341` [#](collection.go#L339-L341)
+* `func (c *Collection[T]) AtLast() (T, bool)` [#](collection.go#L355)
+* `collection.go:355:357` [#](collection.go#L355-L357)
 
 AtLast attempts to return the last item of the collection along with aboolean value stating whether or not an item could be found.
 
@@ -1039,8 +1079,8 @@ func main() {
 // strawberry true
 ```
 ### Function `Count`
-* `func (c *Collection[T]) Count(item T) (count int)` [#](collection.go#L344)
-* `collection.go:344:351` [#](collection.go#L344-L351)
+* `func (c *Collection[T]) Count(item T) (count int)` [#](collection.go#L360)
+* `collection.go:360:368` [#](collection.go#L360-L368)
 
 Count counts the number of items in the collection that compare equal to value.
 
@@ -1065,8 +1105,8 @@ func main() {
 // Orange Count: 2
 ```
 ### Function `CountBy`
-* `func (c *Collection[T]) CountBy(f func(T) bool) (count int)` [#](collection.go#L354)
-* `collection.go:354:361` [#](collection.go#L354-L361)
+* `func (c *Collection[T]) CountBy(f func(T) bool) (count int)` [#](collection.go#L371)
+* `collection.go:371:379` [#](collection.go#L371-L379)
 
 CountBy counts the number of items in the collection for which predicate is true.
 
@@ -1093,8 +1133,8 @@ func main() {
 // Berry Types: 2
 ```
 ### Function `MarshalJSON`
-* `func (c *Collection[T]) MarshalJSON() ([]byte, error)` [#](collection.go#L365)
-* `collection.go:365:374` [#](collection.go#L365-L374)
+* `func (c *Collection[T]) MarshalJSON() ([]byte, error)` [#](collection.go#L383)
+* `collection.go:383:392` [#](collection.go#L383-L392)
 
 MarshalJSON implements the Marshaler interface so the current collection'sitems can be marshalled into valid JSON.
 

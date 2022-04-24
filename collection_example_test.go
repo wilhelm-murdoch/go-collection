@@ -152,6 +152,28 @@ func ExampleCollection_Contains() {
 	// false
 }
 
+func ExampleCollection_ContainsBy() {
+	type Person struct {
+		Name string
+		Age  int
+	}
+
+	people := []Person{
+		{"wilhelm", 31},
+		{"luke", 42},
+		{"rob", 17},
+		{"peter", 26},
+		{"josh", 26},
+	}
+
+	fmt.Println(collection.New(people...).ContainsBy(func(i int, p Person) bool {
+		return p.Age < 20
+	}))
+
+	// Output:
+	// true
+}
+
 func ExampleCollection_Shift() {
 	fmt.Println(collection.New("apple", "orange", "strawberry").Shift())
 
