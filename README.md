@@ -282,7 +282,7 @@ func main() {
 * `func (c *Collection[T]) ContainsBy(f func(i int, item T) bool) (found bool)` [#](collection.go#L78)
 * `collection.go:78:86` [#](collection.go#L78-L86)
 
-ContainsBy returns true if an item in the current collection matches thespecified predicate function. This is useful if you have a slice of objectsand you wish to check the existense of a specific field value.
+ContainsBy returns true if an item in the current collection matches thespecified predicate function. This is useful if you have a slice of objectsand you wish to check the existence of a specific field value.
 
 ```go
 package main

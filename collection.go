@@ -74,7 +74,7 @@ func (c *Collection[T]) Contains(item T) (found bool) {
 
 // ContainsBy returns true if an item in the current collection matches the
 // specified predicate function. This is useful if you have a slice of objects
-// and you wish to check the existense of a specific field value.
+// and you wish to check the existence of a specific field value.
 func (c *Collection[T]) ContainsBy(f func(i int, item T) bool) (found bool) {
 	for i, item := range c.items {
 		if f(i, item) {
