@@ -3,7 +3,9 @@ package collection_test
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"strings"
+	"time"
 
 	"github.com/wilhelm-murdoch/go-collection"
 )
@@ -32,6 +34,36 @@ func ExampleCollection_Sort_numeric() {
 	//  1 4 2 3
 	// Sorted:
 	//  1 2 3 4
+}
+
+func ExampleCollection_Batch() {
+	type Job struct {
+		Timestamp int64
+		Processed bool
+	}
+
+	jobs := make([]Job, 0)
+	for i := 1; i <= 100; i++ {
+		jobs = append(jobs, Job{time.Now().UnixNano(), false})
+	}
+
+	c1 := collection.New(jobs...)
+	c2, err := c1.Batch(func(b, j int, job Job) (Job, error) {
+		job.Processed = true
+		return job, nil
+	}, 5)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	processed := c2.All(func(i int, job Job) bool {
+		return job.Processed == true
+	})
+
+	fmt.Printf("processed %d/%d jobs:%v\n", c2.Length(), c1.Length(), processed)
+	// Output:
+	// processed 100/100 jobs:true
 }
 
 func ExampleCollection_Sort_alpha() {
