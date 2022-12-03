@@ -2,7 +2,6 @@ package collection_test
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"math/rand"
 	"reflect"
@@ -48,54 +47,21 @@ type Job struct {
 }
 
 func TestCollectionBatch(t *testing.T) {
-	jobs := make([]Job, 0)
+	jobs := make([]*Job, 0)
 	for i := 0; i <= 100; i++ {
-		jobs = append(jobs, Job{randomString(15), false})
+		jobs = append(jobs, &Job{randomString(15), false})
 	}
 
 	c1 := collection.New(jobs...)
-	c2, err := c1.Batch(func(b, j int, job Job) (Job, error) {
+	c1.Batch(func(b, j int, job *Job) {
 		job.Processed = true
-		return job, nil
 	}, 5)
 
-	processed := c2.All(func(i int, job Job) bool {
+	processed := c1.All(func(i int, job *Job) bool {
 		return job.Processed == true
 	})
 
 	assert.True(t, processed, "expected all jobs to be processed")
-	assert.Nil(t, err, "expected no error result, but got %s instead", err)
-}
-
-func TestCollectionBatchError(t *testing.T) {
-	jobs := make([]Job, 0)
-	for i := 0; i <= 100; i++ {
-		jobs = append(jobs, Job{randomString(15), false})
-	}
-
-	limit := 3
-
-	c1 := collection.New(jobs...)
-	c2, err := c1.Batch(func(b, j int, job Job) (Job, error) {
-		if b == 0 && j == limit {
-			return job, errors.New("bloops")
-		}
-		job.Processed = true
-		return job, nil
-	}, 5)
-
-	assert.Equal(t, c2.Length(), limit, "expected %d jobs before existing due to error, got %d instead", c2.Length(), limit)
-	assert.NotNil(t, err, "expected no error result, but got %s instead", err)
-}
-
-func TestCollectionBatchOutOfBounds(t *testing.T) {
-	c1 := returnCollection()
-
-	_, err := c1.Batch(func(b, j int, s string) (string, error) {
-		return s, nil
-	}, c1.Length()+10)
-
-	assert.Nil(t, err, "expected no error result, but got %s instead", err)
 }
 
 func TestCollectionPushDistinct(t *testing.T) {

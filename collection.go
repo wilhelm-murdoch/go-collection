@@ -7,9 +7,8 @@ import (
 	"math/rand"
 	"reflect"
 	"sort"
+	"sync"
 	"time"
-
-	"golang.org/x/sync/errgroup"
 )
 
 type Collection[T any] struct {
@@ -52,17 +51,12 @@ func (c *Collection[T]) Filter(f func(T) bool) (out Collection[T]) {
 // jobs that will be processed in parallel by Goroutines managed by an error
 // group. The specified function `f` will be executed for each job in each
 // batch. The signature for this function is
-// `func(currentBatchIndex, currentJobIndex int, job T) (T, error)`. Batch will
-// return a new collection containing each job either upon completion, or until
-// it encounters an error. For the latter, a collection containing any
-// processed job up until that error will be returned in addition to the error
-// itself.
-func (c *Collection[T]) Batch(f func(int, int, T) (T, error), batchSize int) (*Collection[T], error) {
+// `func(currentBatchIndex, currentJobIndex int, job T)`. ( Chainable )
+func (c *Collection[T]) Batch(f func(int, int, T), batchSize int) *Collection[T] {
 	var (
-		errors     errgroup.Group
 		batches    [][]T
-		out        = New[T]()
 		batchCount = int(math.Ceil(float64(c.Length()) / float64(batchSize)))
+		wg         sync.WaitGroup
 	)
 
 	jobsCount := c.Length()
@@ -81,25 +75,17 @@ func (c *Collection[T]) Batch(f func(int, int, T) (T, error), batchSize int) (*C
 	}
 
 	for b, batch := range batches {
+		wg.Add(len(batch))
 		for j, t := range batch {
-			errors.Go(func() error {
-				result, err := f(b, j, t)
-				if err != nil {
-					return err
-				}
-
-				out.Push(result)
-
-				return nil
-			})
-
-			if err := errors.Wait(); err != nil {
-				return out, err
-			}
+			go func(b int, j int, t T) {
+				defer wg.Done()
+				f(b, j, t)
+			}(b, j, t)
 		}
+		wg.Wait()
 	}
 
-	return out, nil
+	return c
 }
 
 // Slice returns a new collection containing a slice of the current collection

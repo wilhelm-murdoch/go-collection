@@ -3,7 +3,6 @@ package collection_test
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -42,26 +41,21 @@ func ExampleCollection_Batch() {
 		Processed bool
 	}
 
-	jobs := make([]Job, 0)
+	jobs := make([]*Job, 0)
 	for i := 1; i <= 100; i++ {
-		jobs = append(jobs, Job{time.Now().UnixNano(), false})
+		jobs = append(jobs, &Job{time.Now().UnixNano(), false})
 	}
 
 	c1 := collection.New(jobs...)
-	c2, err := c1.Batch(func(b, j int, job Job) (Job, error) {
+	c1.Batch(func(b, j int, job *Job) {
 		job.Processed = true
-		return job, nil
 	}, 5)
 
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	processed := c2.All(func(i int, job Job) bool {
+	processed := c1.All(func(i int, job *Job) bool {
 		return job.Processed == true
 	})
 
-	fmt.Printf("processed %d/%d jobs:%v\n", c2.Length(), c1.Length(), processed)
+	fmt.Printf("processed %d/%d jobs:%v\n", c1.Length(), c1.Length(), processed)
 	// Output:
 	// processed 100/100 jobs:true
 }
