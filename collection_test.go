@@ -1,6 +1,7 @@
 package collection_test
 
 import (
+	cr "crypto/rand"
 	"encoding/json"
 	"fmt"
 	"math/rand"
@@ -14,12 +15,12 @@ import (
 )
 
 func init() {
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 }
 
 func randomString(length int) string {
 	b := make([]byte, length)
-	rand.Read(b)
+	cr.Read(b)
 	return fmt.Sprintf("%x", b)[:length]
 }
 
