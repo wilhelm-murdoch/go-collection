@@ -213,13 +213,13 @@ func (c *Collection[T]) FindIndex(f func(i int, item T) bool) int {
 // RandomIndex returns the index associated with a random item from the current
 // collection.
 func (c *Collection[T]) RandomIndex() int {
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 	return rand.Intn(c.Length() - 1)
 }
 
 // Random returns a random item from the current collection.
 func (c *Collection[T]) Random() (T, bool) {
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 	return c.At(rand.Intn(c.Length()))
 }
 
