@@ -34,7 +34,9 @@ func (c *Collection[T]) Sort(cmp func(a, b T) int) *Collection[T] {
 
 // Filter returns a new collection with items that have passed predicate check.
 // ( Chainable )
-func (c *Collection[T]) Filter(f func(T) bool) (out Collection[T]) {
+func (c *Collection[T]) Filter(f func(T) bool) Collection[T] {
+	var out Collection[T]
+
 	out.items = make([]T, 0, len(c.items))
 	for _, inner := range c.items {
 		if f(inner) {
@@ -92,7 +94,7 @@ func (c *Collection[T]) Slice(from, to int) *Collection[T] {
 // method makes use of `reflect.DeepEqual` to ensure an absolute match. If you
 // wish to check by a specific field within a slice of objects, use
 // `collection.ContainsBy` instead.
-func (c *Collection[T]) Contains(item T) (found bool) {
+func (c *Collection[T]) Contains(item T) bool {
 	return slices.ContainsFunc(c.items, func(inner T) bool {
 		return reflect.DeepEqual(item, inner)
 	})
@@ -101,13 +103,16 @@ func (c *Collection[T]) Contains(item T) (found bool) {
 // ContainsBy returns true if an item in the current collection matches the
 // specified predicate function. This is useful if you have a slice of objects
 // and you wish to check the existence of a specific field value.
-func (c *Collection[T]) ContainsBy(f func(i int, item T) bool) (found bool) {
+func (c *Collection[T]) ContainsBy(f func(i int, item T) bool) bool {
+	var found bool
+
 	for i, item := range c.items {
 		if f(i, item) {
 			found = true
 			break
 		}
 	}
+
 	return found
 }
 
@@ -169,7 +174,9 @@ func (c *Collection[T]) Empty() *Collection[T] {
 // Find returns the first item in the provided current collectionthat satisfies
 // the provided testing function. If no items satisfy the testing function,
 // a <nil> value is returned.
-func (c *Collection[T]) Find(f func(i int, item T) bool) (item T) {
+func (c *Collection[T]) Find(f func(i int, item T) bool) T {
+	var item T
+
 	for i, item := range c.items {
 		if found := f(i, item); found {
 			return item
@@ -208,6 +215,7 @@ func (c *Collection[T]) Random() (T, bool) {
 		var zero T
 		return zero, false
 	}
+
 	return c.At(c.RandomIndex())
 }
 
@@ -227,7 +235,9 @@ func (c *Collection[T]) LastIndexOf(item T) int {
 // accumulating the result of running each item in the collection through an
 // accumulator function. Each successive invocation is supplied with the return
 // value returned by the previous call.
-func (c *Collection[T]) Reduce(f func(i int, item, accumulator T) T) (out T) {
+func (c *Collection[T]) Reduce(f func(i int, item, accumulator T) T) T {
+	var out T
+
 	for i, item := range c.items {
 		out = f(i, item, out)
 	}
@@ -289,9 +299,11 @@ func (c *Collection[T]) Push(items ...T) int {
 
 // Pop method removes the last item from the current collection and then
 // returns that item.
-func (c *Collection[T]) Pop() (out T, found bool) {
+func (c *Collection[T]) Pop() (T, bool) {
+	var out T
+
 	if c.Length() == 0 {
-		return
+		return out, false
 	}
 
 	out = c.items[c.Length()-1]
@@ -308,7 +320,9 @@ func (c *Collection[T]) Length() int {
 // Map method creates to a new collection by using callback invocation result
 // on each array item. On each iteration f is invoked with arguments: index and
 // current item. It should return the new collection. ( Chainable )
-func (c *Collection[T]) Map(f func(int, T) T) (out Collection[T]) {
+func (c *Collection[T]) Map(f func(int, T) T) Collection[T] {
+	var out Collection[T]
+
 	out.items = make([]T, 0, len(c.items))
 	for i, item := range c.items {
 		out.Push(f(i, item))
@@ -386,18 +400,20 @@ func (c *Collection[T]) AtLast() (T, bool) {
 }
 
 // Count counts the number of items in the collection that compare equal to value.
-func (c *Collection[T]) Count(item T) (count int) {
+func (c *Collection[T]) Count(item T) int {
+	var count int
 	for _, inner := range c.items {
 		if reflect.DeepEqual(inner, item) {
 			count++
 		}
 	}
 
-	return
+	return count
 }
 
 // CountBy counts the number of items in the collection for which predicate is true.
-func (c *Collection[T]) CountBy(f func(T) bool) (count int) {
+func (c *Collection[T]) CountBy(f func(T) bool) int {
+	var count int
 	for _, item := range c.items {
 		if f(item) {
 			count++
@@ -413,8 +429,10 @@ func (c *Collection[T]) MarshalJSON() ([]byte, error) {
 	if c.items == nil {
 		return []byte("[]"), nil
 	}
+
 	return json.Marshal(c.items)
 }
+
 // Iter returns an iterator over the collection's items with their indices.
 // This allows for usage in for-range loops: for i, item := range c.Iter() { ... }
 func (c *Collection[T]) Iter() iter.Seq2[int, T] {
@@ -438,5 +456,6 @@ func (c *Collection[T]) RemoveAt(index int) *Collection[T] {
 	if index >= 0 && index < c.Length() {
 		c.items = slices.Delete(c.items, index, index+1)
 	}
+
 	return c
 }

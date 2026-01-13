@@ -5,7 +5,7 @@
 [![Go report](https://goreportcard.com/badge/github.com/wilhelm-murdoch/go-collection)](https://goreportcard.com/report/github.com/wilhelm-murdoch/go-collection)
 [![Stability: Active](https://masterminds.github.io/stability/active.svg)](https://masterminds.github.io/stability/active.html)
 
-A generic collection for Go with a few convenient methods. 
+A quality of life package for management of generic collections for Go with a few convenient methods. 
 
 There are far more comprehensive modules out there, but this one works quite well for my purposes.
 # Install
