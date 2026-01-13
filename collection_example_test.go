@@ -19,10 +19,8 @@ func ExampleCollection_Sort_numeric() {
 	})
 
 	fmt.Println("\nSorted:")
-	numbers.Sort(func(i, j int) bool {
-		left, _ := numbers.At(i)
-		right, _ := numbers.At(j)
-		return left < right
+	numbers.Sort(func(a, b int) int {
+		return a - b
 	}).Each(func(i, n int) bool {
 		fmt.Print(" ", n)
 		return false
@@ -66,10 +64,8 @@ func ExampleCollection_Sort_alpha() {
 	fmt.Println("Unsorted:")
 	fmt.Println(strings.Join(names.Items(), ","))
 
-	names.Sort(func(i, j int) bool {
-		left, _ := names.At(i)
-		right, _ := names.At(j)
-		return left < right
+	names.Sort(func(a, b string) int {
+		return strings.Compare(a, b)
 	})
 
 	fmt.Println("Sorted:")

@@ -31,10 +31,8 @@ func returnCollection() *collection.Collection[string] {
 func TestCollectionSort(t *testing.T) {
 	numbers := collection.New(1, 4, 2, 3)
 
-	numbers.Sort(func(i, j int) bool {
-		left, _ := numbers.At(i)
-		right, _ := numbers.At(j)
-		return left < right
+	numbers.Sort(func(a, b int) int {
+		return a - b
 	})
 
 	sorted := []int{1, 2, 3, 4}
@@ -489,4 +487,48 @@ func TestCollectionMarshalJSON(t *testing.T) {
 	encoder = json.NewEncoder(&buffer)
 	err := encoder.Encode(collection.New(busted))
 	assert.NotNil(t, err, "Expected collection marshaling to exit with an error due to unsupported mixed types.")
+}
+
+func TestCollectionIter(t *testing.T) {
+	c := returnCollection()
+	count := 0
+	for i, item := range c.Iter() {
+		assert.Equal(t, c.Items()[i], item)
+		count++
+	}
+	assert.Equal(t, c.Length(), count)
+}
+
+func TestCollectionValues(t *testing.T) {
+	c := returnCollection()
+	count := 0
+	for item := range c.Values() {
+		assert.True(t, c.Contains(item))
+		count++
+	}
+	assert.Equal(t, c.Length(), count)
+}
+
+func TestCollectionClone(t *testing.T) {
+	c := returnCollection()
+	clone := c.Clone()
+	
+	assert.Equal(t, c.Length(), clone.Length())
+	assert.Equal(t, c.Items(), clone.Items())
+	
+	// Verify deep copy (slice separation)
+	c.Push("new_item")
+	assert.NotEqual(t, c.Length(), clone.Length())
+}
+
+func TestCollectionRemoveAt(t *testing.T) {
+	c := collection.New("a", "b", "c")
+	c.RemoveAt(1) // Remove "b"
+	
+	assert.Equal(t, 2, c.Length())
+	assert.Equal(t, "a", c.Items()[0])
+	assert.Equal(t, "c", c.Items()[1])
+	
+	c.RemoveAt(100) // Out of bounds, should do nothing
+	assert.Equal(t, 2, c.Length())
 }

@@ -1,14 +1,12 @@
 package collection
 
 import (
-	"bytes"
 	"encoding/json"
-	"math"
-	"math/rand"
+	"iter"
+	"math/rand/v2"
 	"reflect"
-	"sort"
+	"slices"
 	"sync"
-	"time"
 )
 
 type Collection[T any] struct {
@@ -28,15 +26,16 @@ func (c *Collection[T]) Items() []T {
 	return c.items
 }
 
-// Sort sorts the collection given the provided less function. ( Chainable )
-func (c *Collection[T]) Sort(less func(i, j int) bool) *Collection[T] {
-	sort.Slice(c.items, less)
+// Sort sorts the collection given the provided compare function. ( Chainable )
+func (c *Collection[T]) Sort(cmp func(a, b T) int) *Collection[T] {
+	slices.SortFunc(c.items, cmp)
 	return c
 }
 
 // Filter returns a new collection with items that have passed predicate check.
 // ( Chainable )
 func (c *Collection[T]) Filter(f func(T) bool) (out Collection[T]) {
+	out.items = make([]T, 0, len(c.items))
 	for _, inner := range c.items {
 		if f(inner) {
 			out.Push(inner)
@@ -53,36 +52,23 @@ func (c *Collection[T]) Filter(f func(T) bool) (out Collection[T]) {
 // batch. The signature for this function is
 // `func(currentBatchIndex, currentJobIndex int, job T)`. ( Chainable )
 func (c *Collection[T]) Batch(f func(int, int, T), batchSize int) *Collection[T] {
-	var (
-		batches    [][]T
-		batchCount = int(math.Ceil(float64(c.Length()) / float64(batchSize)))
-		wg         sync.WaitGroup
-	)
+	var wg sync.WaitGroup
 
-	jobsCount := c.Length()
-	if batchSize > jobsCount {
-		batchSize = jobsCount
+	if batchSize > c.Length() {
+		batchSize = c.Length()
 	}
 
-	offset, limit := 0, batchSize
-	for i := 0; i < batchCount; i++ {
-		batches = append(batches, c.items[offset:limit])
-		offset, limit = limit, limit+batchSize
-
-		if limit > c.Length() {
-			limit = c.Length()
-		}
-	}
-
-	for b, batch := range batches {
+	i := 0
+	for batch := range slices.Chunk(c.items, batchSize) {
 		wg.Add(len(batch))
-		for j, t := range batch {
-			go func(b int, j int, t T) {
+		for j, item := range batch {
+			go func(b, j int, t T) {
 				defer wg.Done()
 				f(b, j, t)
-			}(b, j, t)
+			}(i, j, item)
 		}
 		wg.Wait()
+		i++
 	}
 
 	return c
@@ -107,13 +93,9 @@ func (c *Collection[T]) Slice(from, to int) *Collection[T] {
 // wish to check by a specific field within a slice of objects, use
 // `collection.ContainsBy` instead.
 func (c *Collection[T]) Contains(item T) (found bool) {
-	for _, inner := range c.items {
-		if reflect.DeepEqual(item, inner) {
-			found = true
-			break
-		}
-	}
-	return found
+	return slices.ContainsFunc(c.items, func(inner T) bool {
+		return reflect.DeepEqual(item, inner)
+	})
 }
 
 // ContainsBy returns true if an item in the current collection matches the
@@ -146,8 +128,8 @@ func (c *Collection[T]) PushDistinct(items ...T) int {
 // Shift method removes the first item from the current collection, then
 // returns that item.
 func (c *Collection[T]) Shift() T {
-	out := c.items[:1][0]
-	c.items = c.items[1:]
+	out := c.items[0]
+	c.items = slices.Delete(c.items, 0, 1)
 
 	return out
 }
@@ -155,7 +137,7 @@ func (c *Collection[T]) Shift() T {
 // Unshift method appends one item to the beginning of the current collection,
 // returning the new length of the collection.
 func (c *Collection[T]) Unshift(item T) int {
-	c.items = append([]T{item}, c.items...)
+	c.items = slices.Insert(c.items, 0, item)
 	return c.Length()
 }
 
@@ -213,27 +195,32 @@ func (c *Collection[T]) FindIndex(f func(i int, item T) bool) int {
 // RandomIndex returns the index associated with a random item from the current
 // collection.
 func (c *Collection[T]) RandomIndex() int {
-	rand.New(rand.NewSource(time.Now().UnixNano()))
-	return rand.Intn(c.Length() - 1)
+	if c.Length() == 0 {
+		return -1
+	}
+
+	return rand.IntN(c.Length())
 }
 
 // Random returns a random item from the current collection.
 func (c *Collection[T]) Random() (T, bool) {
-	rand.New(rand.NewSource(time.Now().UnixNano()))
-	return c.At(rand.Intn(c.Length()))
+	if c.Length() == 0 {
+		var zero T
+		return zero, false
+	}
+	return c.At(c.RandomIndex())
 }
 
 // LastIndexOf returns the last index at which a given item can be found in the
 // current collection, or -1 if it is not present.
 func (c *Collection[T]) LastIndexOf(item T) int {
-	index := -1
-	for i, inner := range c.items {
-		if reflect.DeepEqual(item, inner) {
-			index = i
+	for i := len(c.items) - 1; i >= 0; i-- {
+		if reflect.DeepEqual(item, c.items[i]) {
+			return i
 		}
 	}
 
-	return index
+	return -1
 }
 
 // Reduce reduces a collection to a single value. The value is calculated by
@@ -251,9 +238,7 @@ func (c *Collection[T]) Reduce(f func(i int, item, accumulator T) T) (out T) {
 // Reverse the current collection so that the first item becomes the last, the
 // second item becomes the second to last, and so on. ( Chainable )
 func (c *Collection[T]) Reverse() *Collection[T] {
-	for i1, i2 := 0, c.Length()-1; i1 < i2; i1, i2 = i1+1, i2-1 {
-		c.items[i1], c.items[i2] = c.items[i2], c.items[i1]
-	}
+	slices.Reverse(c.items)
 	return c
 }
 
@@ -310,7 +295,7 @@ func (c *Collection[T]) Pop() (out T, found bool) {
 	}
 
 	out = c.items[c.Length()-1]
-	c.items = c.items[0 : c.Length()-1]
+	c.items = slices.Delete(c.items, c.Length()-1, c.Length())
 
 	return out, true
 }
@@ -324,6 +309,7 @@ func (c *Collection[T]) Length() int {
 // on each array item. On each iteration f is invoked with arguments: index and
 // current item. It should return the new collection. ( Chainable )
 func (c *Collection[T]) Map(f func(int, T) T) (out Collection[T]) {
+	out.items = make([]T, 0, len(c.items))
 	for i, item := range c.items {
 		out.Push(f(i, item))
 	}
@@ -366,8 +352,7 @@ func (c *Collection[T]) InsertAt(item T, index int) *Collection[T] {
 		return c
 	}
 
-	c.items = append(c.items[:index+1], c.items[index:]...)
-	c.items[index] = item
+	c.items = slices.Insert(c.items, index, item)
 
 	return c
 }
@@ -425,12 +410,33 @@ func (c *Collection[T]) CountBy(f func(T) bool) (count int) {
 // MarshalJSON implements the Marshaler interface so the current collection's
 // items can be marshalled into valid JSON.
 func (c *Collection[T]) MarshalJSON() ([]byte, error) {
-	var buffer bytes.Buffer
-	encoder := json.NewEncoder(&buffer)
-
-	if err := encoder.Encode(c.Items()); err != nil {
-		return nil, err
+	if c.items == nil {
+		return []byte("[]"), nil
 	}
+	return json.Marshal(c.items)
+}
+// Iter returns an iterator over the collection's items with their indices.
+// This allows for usage in for-range loops: for i, item := range c.Iter() { ... }
+func (c *Collection[T]) Iter() iter.Seq2[int, T] {
+	return slices.All(c.items)
+}
 
-	return buffer.Bytes(), nil
+// Values returns an iterator over the collection's items.
+// This allows for usage in for-range loops: for item := range c.Values() { ... }
+func (c *Collection[T]) Values() iter.Seq[T] {
+	return slices.Values(c.items)
+}
+
+// Clone returns a deep copy of the current collection.
+func (c *Collection[T]) Clone() *Collection[T] {
+	return New(slices.Clone(c.items)...)
+}
+
+// RemoveAt removes the item at the specified index from the collection.
+// ( Chainable )
+func (c *Collection[T]) RemoveAt(index int) *Collection[T] {
+	if index >= 0 && index < c.Length() {
+		c.items = slices.Delete(c.items, index, index+1)
+	}
+	return c
 }
