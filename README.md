@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> To the handful of people who made use of this module; thank you! Unfortunately, it's time to let this particular chapter close. Go's [slices](https://pkg.go.dev/slices) library has effectively EoL'd this project for a while now. Don't worry, archiving this repository shouldn't break anything you've written that makes use of this module. Just know you won't be seeing any new updates here.
+
 # Collection
 
 ![Build Status](https://github.com/wilhelm-murdoch/go-collection/actions/workflows/go.yml/badge.svg)
